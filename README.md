@@ -1,22 +1,15 @@
-# Lethean builder (currenlty just a base image)
+# Lethean builder For Release 3.1.0
 
-Create a file called `Dockerfile` or edit the one you have.
 
 ```dockerfile
-FROM registry.gitlab.com/lthn.io/sdk/build as builder
-# Change to the mapped mount 
-WORKDIR /home/lthn/build
-# Copy in the files from the supplied build context
-# the space between the dots is important (source) (destination)
+FROM lthn/build:release-3.1.0 as builder
+# Grab project files, from context or git/curl
 COPY . . 
-# Do some stuff here
+# Perform your build
 RUN set -ex && make
-# Ok, this Copy of Ubuntu is Full of nasty dev libs! 
-# let's reset the image to a fresh Ubuntu
+# Start the end image
 FROM ubuntu:16:04 as image
-# ok, none of the files we made are here, time to copy into this namespace
-COPY --from=builder /home/lthn/build/release/bin /usr/local/bin 
+# Grab the assets you want to bring to the new image
+COPY --from=builder /build/release/bin /usr/local/bin 
 
-# Enjoy
 ```
-
