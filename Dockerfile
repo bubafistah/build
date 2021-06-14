@@ -10,26 +10,14 @@ FROM ubuntu:16.04
 RUN set -ex && \
     apt-get update && \
     apt-get --no-install-recommends --yes install \
-        ca-certificates \
-        cmake \
-        g++ \
-        make \
-        pkg-config \
-        graphviz \
-        doxygen \
-        git \
-        curl \
-        libtool-bin \
-        autoconf \
-        automake \
-        bzip2 \
-        libunwind8-dev \
-        libminiupnpc-dev \
-        libssl-dev
-
-RUN apt-get install -y libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/ ; \
-    apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        ca-certificates g++ make pkg-config graphviz doxygen git \
+        curl libtool-bin autoconf automake \
+        bzip2 libunwind8-dev libminiupnpc-dev \
+        libssl-dev libgtest-dev \
+        qtbase5-dev qt5-default qtdeclarative5-dev qml-module-qtquick-controls \
+        qml-module-qtquick-xmllistmodel qttools5-dev-tools qml-module-qtquick-dialogs qml-module-qt-labs-settings \
+        libqt5qml-graphicaleffects qtmultimedia5-dev qml-module-qtmultimedia libzbar-dev
+        && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/
 
 WORKDIR /usr/local
 #Cmake
@@ -107,7 +95,3 @@ RUN set -ex \
     && make \
     && make check \
     && make install
-
-RUN apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qml-module-qtquick-controls \
-            qml-module-qtquick-xmllistmodel qttools5-dev-tools qml-module-qtquick-dialogs qml-module-qt-labs-settings \
-            libqt5qml-graphicaleffects qtmultimedia5-dev qml-module-qtmultimedia libzbar-dev
