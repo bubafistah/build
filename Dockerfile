@@ -16,7 +16,7 @@ RUN set -ex && \
         libssl-dev libgtest-dev \
         qtbase5-dev qt5-default qtdeclarative5-dev qml-module-qtquick-controls \
         qml-module-qtquick-xmllistmodel qttools5-dev-tools qml-module-qtquick-dialogs qml-module-qt-labs-settings \
-        libqt5qml-graphicaleffects qtmultimedia5-dev qml-module-qtmultimedia libzbar-dev
+        libqt5qml-graphicaleffects qtmultimedia5-dev qml-module-qtmultimedia libzbar-dev \
         && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/
 
 WORKDIR /usr/local
