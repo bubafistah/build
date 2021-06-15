@@ -10,13 +10,23 @@ FROM ubuntu:16.04
 RUN set -ex && \
     apt-get update && \
     apt-get --no-install-recommends --yes install \
-        ca-certificates g++ make pkg-config graphviz doxygen git \
-        curl libtool-bin autoconf automake \
-        bzip2 libunwind8-dev libminiupnpc-dev \
-        libssl-dev libgtest-dev \
-        qtbase5-dev qt5-default qtdeclarative5-dev qml-module-qtquick-controls \
-        qml-module-qtquick-xmllistmodel qttools5-dev-tools qml-module-qtquick-dialogs qml-module-qt-labs-settings \
-        libqt5qml-graphicaleffects qtmultimedia5-dev qml-module-qtmultimedia libzbar-dev
+        ca-certificates \
+        cmake \
+        g++ \
+        make \
+        pkg-config \
+        graphviz \
+        doxygen \
+        git \
+        curl \
+        libtool-bin \
+        autoconf \
+        automake \
+        bzip2 \
+        libunwind8-dev \
+        libminiupnpc-dev \
+        libssl-dev
+
 
 WORKDIR /usr/local
 #Cmake
@@ -32,7 +42,6 @@ RUN set -ex \
     && make \
     && make install
 
-RUN  cd /usr/src/gtest && cmake . && make && mv libg* /usr/lib/
 ## Boost
 ARG BOOST_VERSION=1_58_0
 ARG BOOST_VERSION_DOT=1.58.0
@@ -44,7 +53,7 @@ RUN set -ex \
     && tar -xvf boost_${BOOST_VERSION}.tar.bz2 \
     && cd boost_${BOOST_VERSION} \
     && ./bootstrap.sh \
-    && ./b2 --build-type=minimal link=static runtime-link=static --with-chrono --with-date_time --with-filesystem --with-program_options --with-regex --with-serialization --with-system --with-thread --with-locale threading=multi threadapi=pthread cflags="-fPIC" cxxflags="-fPIC" install
+    && ./b2 --build-type=minimal link=static runtime-link=static --with-chrono --with-date_time --with-filesystem --with-program_options --with-regex --with-serialization --with-system --with-thread --with-locale threading=multi threadapi=pthread cflags="-fPIC" cxxflags="-fPIC" stage
 ENV BOOST_ROOT /usr/local/boost_${BOOST_VERSION}
 
 
@@ -95,3 +104,9 @@ RUN set -ex \
     && make \
     && make check \
     && make install
+
+RUN apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qml-module-qtquick-controls \
+    qml-module-qtquick-xmllistmodel qttools5-dev-tools qml-module-qtquick-dialogs qml-module-qt-labs-settings \
+    libqt5qml-graphicaleffects lsb-core libunwind8-dev ; \
+     apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
