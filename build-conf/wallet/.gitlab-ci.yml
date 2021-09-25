@@ -59,7 +59,7 @@ wallet:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - docker pull "lthn/build:wallet-$BUILD" || true
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg BUILD=$BUILD --cache-from $CI_REGISTRY/lthn/build:wallet-$BUILD -t lthn/build:wallet-$BUILD -f build-conf/wallet/$BUILD.Dockerfile build-src
+    - docker build --build-arg IMG_PREFIX=$CI_REGISTRY/lthn --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg BUILD=$BUILD --cache-from $CI_REGISTRY/lthn/build:wallet-$BUILD -t lthn/build:wallet-$BUILD -f build-conf/wallet/$BUILD.Dockerfile build-src
     - docker image tag "lthn/build:wallet-$BUILD" "$CI_REGISTRY/lthn/build:wallet-$BUILD"
 
 wallet:deploy:
